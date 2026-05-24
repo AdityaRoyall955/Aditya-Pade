@@ -65,8 +65,7 @@ create_server() {
         LATEST_V=$(curl -s https://api.purpurmc.org/v2/purpur | jq -r ".versions[-1]")
         STABLE_V=$(curl -s https://api.purpurmc.org/v2/purpur | jq -r ".versions[-5]")
     else
-        echo -e "${YELLOW}🔄 Connecting to PaperMC Live API... 📡${NC}"
-        LATEST_V=$(curl -s https://api.papermc.io/v2/projects/paper | jq -r ".versions[-1]")
+        echo -e "${YELLOW}🔄 Connecting to PaperMC Live API... 📡${NC}"\n        LATEST_V=$(curl -s https://api.papermc.io/v2/projects/paper | jq -r ".versions[-1]")
         STABLE_V=$(curl -s https://api.papermc.io/v2/projects/paper | jq -r ".versions[-5]")
     fi
     
@@ -162,9 +161,9 @@ create_server
 EOF
 chmod +x menu.sh
 
-if ! grep -q "alias mc=" ~/.bashrc; then
-    echo "alias mc='cd ~/minecraft-server && ./menu.sh'" >> ~/.bashrc
-fi
-source ~/.bashrc
+# Force overwrite/link global alias perfectly
+sed -i '/alias mc=/d' ~/.bashrc 2>/dev/null
+echo "alias mc='cd ~/minecraft-server && ./menu.sh'" >> ~/.bashrc
+source ~/.bashrc 2>/dev/null
 clear
-echo -e "\e[1;32m🔥 Ultimate Here-Doc Build Deployed! Type 'mc' to run! 😁\e[0m"
+echo -e "\e[1;32m🔥 Pristine Code Compiled! Type 'mc' or 'source ~/.bashrc' to open the panel! 😁\e[0m"
